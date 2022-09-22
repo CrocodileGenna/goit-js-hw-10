@@ -52,7 +52,6 @@ li {
   display: flex;
   flex-direction: column;
   margin: 20px 0;
-  width: 400px;
 }
 
 .title_country{
