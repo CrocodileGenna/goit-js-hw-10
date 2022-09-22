@@ -24,12 +24,14 @@ function searchCountry(event){
         let objectEd = resp.length;
         // refs.countrylist.insertAdjacentHTML('beforeend', renderList(resp))
         // console.log(resp) 
+        // 3 && name.length > 1
         if(name.length <= objectEd){
             refs.countrylist.insertAdjacentHTML('beforeend', renderList(resp));
         }else{
             refs.countryinfo.insertAdjacentHTML('beforeend', renderInfo(resp));
+            // flagBack(refs);
         }
-        ifElse()
+        ifElse(objectEd)
     })
     .catch((error)=>{
         Notiflix.Notify.failure("Oops, there is no country with that name");
@@ -50,8 +52,8 @@ function ifElse(objectEd){
 function renderList(arryCountry){
     const markap = arryCountry.map(({name , flags})=>{
         return `<li class="speedInfo">
-        <img src="${flags.svg}" alt="${name.official}" width="50px" height="25px">
-        <h1 class="title">${name.official}</h1>
+        <img src="${flags.svg}" alt="${name.official}" width="60px" height="30px">
+        <h1 class="title"> ${name.official} </h1>
         </li>`
     }).join("")
     return markap
@@ -60,11 +62,11 @@ function renderInfo(arryCountry){
     const markInfo = arryCountry.map(({name,capital,population,flags,languages})=>{
         return `<ul class="fullInfo">
         <li class="title_country">
-        <img src="${flags.svg}" alt="${name.official}" width="35px" height="20px">
+        <img src="${flags.svg}" alt="${name.official}" width="40px" height="20px">
         <h1 class="title">${name.official}</h1>
         </li>
         <li>
-        <p class="capital">Capital: ${capital} ;</p>
+        <p class="capital">Capital is ${capital} ;</p>
         </li>
         <li>
         <p class="population">Population: ${population} peoples;</p>
@@ -77,3 +79,11 @@ function renderInfo(arryCountry){
     }).join("")
     return markInfo
 }
+
+// function flagBack(colors){
+//     let backColor = document.querySelector('.fullInfo');
+//     const countryFlag = colors.map(({flags})=>{
+//         backColor.style.backgroundImage = `url(${flags.svg})`;
+//     })
+//     return countryFlag
+// }
