@@ -25,7 +25,7 @@ function searchCountry(event){
         // refs.countrylist.insertAdjacentHTML('beforeend', renderList(resp))
         // console.log(resp) 
         // 3 && name.length > 1
-        if(name.length <= objectEd){
+        if(name.length <= 3 && name.length > 1){
             refs.countrylist.insertAdjacentHTML('beforeend', renderList(resp));
         }else{
             refs.countryinfo.insertAdjacentHTML('beforeend', renderInfo(resp));
