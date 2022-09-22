@@ -1,5 +1,7 @@
 import './css/styles.css';
 import {fetchCountries} from './fetchCountries'
+import Notiflix from 'notiflix';
+
 const DEBOUNCE_DELAY = 300;
 var debounce = require('lodash.debounce');
 // console.log(fetchCountries("Ukraine"))
@@ -19,37 +21,56 @@ function searchCountry(event){
     .then((resp)=>{
         refs.countrylist.innerHTML = "";
         refs.countryinfo.innerHTML = "";
+        let objectEd = resp.length;
         // refs.countrylist.insertAdjacentHTML('beforeend', renderList(resp))
-        console.log(resp) 
-        if(name.length === 1){
-            refs.countrylist.insertAdjacentHTML('beforeend', renderList(resp))
+        // console.log(resp) 
+        if(name.length <= objectEd){
+            refs.countrylist.insertAdjacentHTML('beforeend', renderList(resp));
         }else{
-            refs.countryinfo.insertAdjacentHTML('beforeend', renderInfo(resp))
+            refs.countryinfo.insertAdjacentHTML('beforeend', renderInfo(resp));
         }
+        ifElse()
     })
     .catch((error)=>{
-        console.log(error)
+        Notiflix.Notify.failure("Oops, there is no country with that name");
+        refs.countrylist.innerHTML = "";
+        refs.countryinfo.innerHTML = "";
+        // console.log(error)
     })
+}
+
+function ifElse(objectEd){
+    if(objectEd >= 10){
+        Notiflix.Notify.info(`Too many matches found. Please enter a more specific name.`);
+        refs.countrylist.innerHTML = "";
+        refs.countryinfo.innerHTML = "";
+    }
 }
 
 function renderList(arryCountry){
     const markap = arryCountry.map(({name , flags})=>{
-        return `<li>
+        return `<li class="speedInfo">
         <img src="${flags.svg}" alt="${name.official}" width="50px" height="25px">
-        <h1 class="title">"${name.official}"</h1>
+        <h1 class="title">${name.official}</h1>
         </li>`
     }).join("")
     return markap
 }
 function renderInfo(arryCountry){
     const markInfo = arryCountry.map(({name,capital,population,flags,languages})=>{
-        return `<ul>
-        <li>
-        <img src="${flags.svg}" alt="${name.official}" width="25px" height="15px">
+        return `<ul class="fullInfo">
+        <li class="title_country">
+        <img src="${flags.svg}" alt="${name.official}" width="35px" height="20px">
         <h1 class="title">${name.official}</h1>
+        </li>
+        <li>
         <p class="capital">Capital: ${capital} ;</p>
+        </li>
+        <li>
         <p class="population">Population: ${population} peoples;</p>
-        <p class="languages">Languages: ${languages} ;</p>
+        </li>
+        <li>
+        <p class="languages">Languages: ${Object.values(languages)} ;</p>
         </li>
         </ul>
         `
