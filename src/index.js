@@ -4,7 +4,6 @@ import Notiflix from 'notiflix';
 
 const DEBOUNCE_DELAY = 300;
 var debounce = require('lodash.debounce');
-// console.log(fetchCountries("Ukraine"))
 
 const refs = {
     input: document.querySelector("input"),
@@ -17,21 +16,25 @@ refs.input.addEventListener('input', debounce(searchCountry, DEBOUNCE_DELAY));
 
 function searchCountry(event){
     const name = refs.input.value.trim();
+    if(!name){
+        return 
+    }
     fetchCountries(name)
     .then((resp)=>{
         refs.countrylist.innerHTML = "";
         refs.countryinfo.innerHTML = "";
         let objectEd = resp.length;
-        // refs.countrylist.insertAdjacentHTML('beforeend', renderList(resp))
-        // console.log(resp) 
         // 3 && name.length > 1
-        if(name.length <= objectEd){
+        if(name.length < 3 && name.length > 1){
             refs.countrylist.insertAdjacentHTML('beforeend', renderList(resp));
         }else{
             refs.countryinfo.insertAdjacentHTML('beforeend', renderInfo(resp));
-            // flagBack(refs);
         }
-        ifElse(objectEd)
+        if(objectEd >= 10){
+            Notiflix.Notify.info(`Too many matches found. Please enter a more specific name.`);
+            refs.countrylist.innerHTML = "";
+            refs.countryinfo.innerHTML = "";
+        }
     })
     .catch((error)=>{
         Notiflix.Notify.failure("Oops, there is no country with that name");
@@ -39,14 +42,6 @@ function searchCountry(event){
         refs.countryinfo.innerHTML = "";
         // console.log(error)
     })
-}
-
-function ifElse(objectEd){
-    if(objectEd >= 10){
-        Notiflix.Notify.info(`Too many matches found. Please enter a more specific name.`);
-        refs.countrylist.innerHTML = "";
-        refs.countryinfo.innerHTML = "";
-    }
 }
 
 function renderList(arryCountry){
