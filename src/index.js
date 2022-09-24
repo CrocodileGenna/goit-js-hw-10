@@ -74,11 +74,3 @@ function renderInfo(arryCountry){
     }).join("")
     return markInfo
 }
-
-// function flagBack(colors){
-//     let backColor = document.querySelector('.fullInfo');
-//     const countryFlag = colors.map(({flags})=>{
-//         backColor.style.backgroundImage = `url(${flags.svg})`;
-//     })
-//     return countryFlag
-// }
